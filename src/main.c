@@ -6,6 +6,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "engine.h"
 #include "game.h"
@@ -16,6 +17,10 @@
 
 int main(int argc, char* argv[])
 {
+	/* seeded here, before the first board is made (game_init() seeds
+	 * again only after board_new() has used rand()) */
+	srand(time(NULL));
+
 	options_init();
 	arguments_parse(argc, argv);
 
