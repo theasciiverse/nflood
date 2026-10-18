@@ -21,7 +21,12 @@
 #ifndef ENGINE_H_DEFINED
 #define ENGINE_H_DEFINED
 
+#ifdef _WIN32
+#define NCURSES_MOUSE_VERSION 2	/* ncurses-style getmouse() */
+#include <curses.h>		/* PDCurses */
+#else
 #include <ncurses.h>
+#endif
 #include "game.h"
 #include "color.h"
 

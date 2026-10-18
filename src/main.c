@@ -3,7 +3,12 @@
  * |_| \| |_|   |_|__ \_\_/ \_\_/ |_|_/
  */
 
+#ifdef _WIN32
+#define NCURSES_MOUSE_VERSION 2	/* ncurses-style getmouse() */
+#include <curses.h>		/* PDCurses */
+#else
 #include <ncurses.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>

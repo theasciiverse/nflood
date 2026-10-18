@@ -21,7 +21,12 @@
 #ifndef COLOR_H_DEFINED
 #define COLOR_H_DEFINED
 
+#ifdef _WIN32
+#define NCURSES_MOUSE_VERSION 2	/* ncurses-style getmouse() */
+#include <curses.h>		/* PDCurses */
+#else
 #include <ncurses.h>
+#endif
 
 /** This file handles all color schemes of nCurses.
  *
