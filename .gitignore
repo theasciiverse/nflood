@@ -10,3 +10,9 @@ nflood.scores
 
 tmp/
 
+
+# Asciiverse packaging
+out/
+stage/
+dist/
+__pycache__/

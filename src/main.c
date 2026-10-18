@@ -156,6 +156,11 @@ int main(int argc, char* argv[])
 				   strlen("r: New Game"),
 				   1))
 			{
+				/* a new board, as r makes; game_init() alone only
+				 * re-flooded the corner of the same board */
+				board_free(board);
+				board = board_new(options.game_width,
+				                  options.game_height);
 				game_init(board);
 			}
 			if (is_hit(event.x,
