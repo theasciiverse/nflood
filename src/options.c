@@ -22,6 +22,8 @@
 #include "board.h"
 #include "options.h"
 
+struct options_t options;
+
 void options_init()
 {
 	options.center      = false;

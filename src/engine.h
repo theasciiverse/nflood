@@ -46,8 +46,8 @@ struct engine_t
 	color_pair_t hilite;      /**< Color of the highlighted text */
 };
 
-/** Global `engine` data structure. */
-struct engine_t engine;
+/** Global `engine` data structure (defined in engine.c). */
+extern struct engine_t engine;
 
 /** Initializes nCurses */
 int engine_init();

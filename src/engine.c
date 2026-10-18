@@ -2,6 +2,8 @@
 #include "engine.h"
 #include "options.h"
 
+struct engine_t engine;
+
 int engine_init()
 {
 	initscr();

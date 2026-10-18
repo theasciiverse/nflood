@@ -31,10 +31,10 @@ struct options_t
 	int game_width;
 	int game_height;
 
-} options_t;
+};
 
-/** All global options from the game.  */
-struct options_t options;
+/** All global options from the game (defined in options.c).  */
+extern struct options_t options;
 
 void options_init();
 
