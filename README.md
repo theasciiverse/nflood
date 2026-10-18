@@ -51,7 +51,9 @@ Then, simply download (or `git clone` it) and `make` it
 
 ## High scores
 
-The high scores file is stored at `~/.local/share/nflood/nflood.scores`.
+The high scores file is stored at `$XDG_DATA_HOME/nflood/nflood.scores`
+(`~/.local/share/nflood/nflood.scores` when `XDG_DATA_HOME` is not set,
+`%APPDATA%\\nflood\\nflood.scores` on Windows).
 
 The game only ranks your score when you are playing at default board size, that
 is 14x14.

@@ -23,10 +23,10 @@
 
 #include <stdbool.h>
 
-/* Where we'll save the high scores,
- * relative to user's home directory.
+/* Where we'll save the high scores: this folder in the
+ * user's data folder ($XDG_DATA_HOME, ~/.local/share).
  */
-#define SCORE_PATH ".local/share/nflood/"
+#define SCORE_DIR "nflood"
 #define SCORE_FILE "nflood.scores"
 
 #define HIGH_SCORE_DEFAULT 25;

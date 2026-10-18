@@ -5,6 +5,37 @@
 #include <sys/stat.h>			/* mkdir() */
 #include "hscores.h"
 
+#ifdef _WIN32
+#define MKDIR(dir) mkdir(dir)
+#else
+#define MKDIR(dir) mkdir(dir, S_IRWXU)
+#endif
+
+/* The folder for the high score file, with a trailing separator:
+ * $XDG_DATA_HOME/nflood/, else ~/.local/share/nflood/ (%APPDATA%\nflood\
+ * on Windows). Returns false when there is no such place. */
+static bool score_folder(char* path, size_t size)
+{
+#ifdef _WIN32
+	const char* appdata = getenv("APPDATA");
+	if (appdata == NULL || appdata[0] == '\0')
+		return false;
+	snprintf(path, size, "%s\\" SCORE_DIR "\\", appdata);
+#else
+	const char* xdg  = getenv("XDG_DATA_HOME");
+	const char* home = getenv("HOME");
+
+	/* an empty or relative XDG_DATA_HOME counts as unset (XDG spec) */
+	if (xdg != NULL && xdg[0] == '/')
+		snprintf(path, size, "%s/" SCORE_DIR "/", xdg);
+	else if (home != NULL && home[0] != '\0')
+		snprintf(path, size, "%s/.local/share/" SCORE_DIR "/", home);
+	else
+		return false;
+#endif
+	return true;
+}
+
 /* Local function that creates a directory tree recurstively,
  * just like `mkdir -p` on UNIX-like systems.
  *
@@ -13,7 +44,7 @@
  */
 void mkdir_p(const char* dir)
 {
-	char   tmp[256];
+	char   tmp[4096];
 	char*  p = NULL;
 	size_t len;
 
@@ -27,16 +58,17 @@ void mkdir_p(const char* dir)
 	 * temporarily replacing '/' by '\0' so mkdir()
 	 * can work.
 	 */
-	for (p = tmp; *p != '\0'; p++)
+	for (p = tmp + 1; *p != '\0'; p++)
 	{
-		if (*p == '/')
+		if (*p == '/' || *p == '\\')
 		{
+			char sep = *p;
 			*p = '\0';
-			mkdir(tmp, S_IRWXU);
-			*p = '/';
+			MKDIR(tmp);
+			*p = sep;
 		}
 	}
-	mkdir(tmp, S_IRWXU);
+	MKDIR(tmp);
 }
 
 /** Opens default high score file, returning a FILE* handle to it.
@@ -44,23 +76,15 @@ void mkdir_p(const char* dir)
  */
 FILE* hscore_open(char* flags)
 {
-	/* We'll expand `~`, leaving here full path + file name */
-	char full_path[256];
-	memset(full_path, '\0', 256);
+	char full_path[4096];
 
-	/* If there's no `$HOME`, we'll save the score at `/tmp` */
-	if (getenv("HOME") == NULL)
-		strncpy(full_path, "/tmp", 256);
-	else
-		strncpy(full_path, getenv("HOME"), 256);
-
-	/* yep, static strings are concatenated like this */
-	strncat(full_path, "/" SCORE_PATH, (256 - strlen(full_path)));
+	if (!score_folder(full_path, sizeof(full_path) - strlen(SCORE_FILE)))
+		return NULL;
 
 	/* Making sure all directories exist first */
 	mkdir_p(full_path);
 
-	strncat(full_path, SCORE_FILE, (256 - strlen(full_path)));
+	strcat(full_path, SCORE_FILE);
 
 	return fopen(full_path, flags);
 }
