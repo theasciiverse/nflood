@@ -7,8 +7,6 @@
 
 void game_init(struct game_board_t *board)
 {
-	srand(time(NULL));
-
 	/* just to make sure */
 	flood(board, 0, 0, board->cell[0][0].color);
 }

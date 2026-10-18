@@ -23,8 +23,7 @@
 
 int main(int argc, char* argv[])
 {
-	/* seeded here, before the first board is made (game_init() seeds
-	 * again only after board_new() has used rand()) */
+	/* seeded once, here, before the first board is made */
 	srand(time(NULL));
 
 	/* so wide ncurses draws the board's checkerboard cells in UTF-8
