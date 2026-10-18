@@ -28,7 +28,8 @@ int main(int argc, char* argv[])
 
 	if (engine_init() == -1)
 	{
-		fprintf(stderr, "ERROR: Failed to initialize nCurses");
+		fprintf(stderr, "nFlood needs a terminal of at least %dx%d.\n",
+		        GAME_UI_WIDTH, GAME_UI_HEIGHT);
 		return -1;
 	}
 	/* Ensure options.game_width and options.game_height fits into window */
@@ -84,6 +85,13 @@ int main(int argc, char* argv[])
 
 		case 'c':
 			engine_center_board(board, hscore, !is_center(), TRUE);
+			break;
+
+		case KEY_RESIZE:
+			/* a centred board is centred again in the new size (it
+			 * is drawn again below) */
+			if (is_center())
+				engine_set_center(true);
 			break;
 
 		case 'r':
