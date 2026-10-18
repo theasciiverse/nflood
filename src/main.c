@@ -182,18 +182,20 @@ int main(int argc, char* argv[])
 			board->moves++;
 		}
 
-		erase();
-		engine_draw_ui(board, hscore);
-		engine_draw_board(board);
-
+		/* a new best is stored and shown at once (it used to be drawn
+		 * before it was stored, so the old best stayed on screen) */
 		if (game_is_over(board) &&
 		    board->width  == DEFAULT_BOARD_WIDTH &&
 			board->height == DEFAULT_BOARD_HEIGHT)
 		{
 			hscore = hscore_get();
-			if (board->moves < hscore)
-				hscore_store(board->moves);
+			if (board->moves < hscore && hscore_store(board->moves))
+				hscore = board->moves;
 		}
+
+		erase();
+		engine_draw_ui(board, hscore);
+		engine_draw_board(board);
 	}
 	board_free(board);
 	engine_exit();
