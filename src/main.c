@@ -51,6 +51,12 @@ int main(int argc, char* argv[])
 	{
 		options.game_height = engine.height - 2;
 	}
+	/* -W/-H of 0, a negative number or not a number gave an empty board
+	 * that the first flood ran past the end of */
+	if (options.game_width < 2)
+		options.game_width = 2;
+	if (options.game_height < 2)
+		options.game_height = 2;
 	engine_set_center(options.center);
 
 	struct game_board_t* board = board_new(options.game_width,
