@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <locale.h>
 
 #include "engine.h"
 #include "game.h"
@@ -20,6 +21,11 @@ int main(int argc, char* argv[])
 	/* seeded here, before the first board is made (game_init() seeds
 	 * again only after board_new() has used rand()) */
 	srand(time(NULL));
+
+	/* so wide ncurses draws the board's checkerboard cells in UTF-8
+	 * where it does not trust the VT100 line set (screen, tmux, the
+	 * Linux console) */
+	setlocale(LC_ALL, "");
 
 	options_init();
 	arguments_parse(argc, argv);
