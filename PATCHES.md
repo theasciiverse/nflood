@@ -84,3 +84,9 @@ wide PDCurses 3.9 and run under Wine (a board flooded to Congrats!, the
 score file in `%APPDATA%\nflood`, r and q); Wine's console showed the
 cells as `?`, so the drawing and the mouse are unchecked on real
 Windows. macOS: not built here.
+
+## Ours
+
+- **How to play it, at the top of README.md.** A short note on installing and
+  starting it with av, or from a release archive; the original text follows
+  unchanged.
